@@ -1,6 +1,25 @@
 {
-  "current": {},
+  "current": {
+    "sections": {
+      "header": {
+        "type": "header",
+        "custom_css": [
+
+        ],
+        "settings": {
+          "svg_logo_color": "#161616",
+          "svg_logo_width": 180,
+          "mobile_menu_title": "Menu",
+          "menu": "main-menu"
+        }
+      }
+    },
+    "content_for_index": [
+
+    ]
+  },
   "presets": {
-    "Default": {}
+    "Default": {
+    }
   }
 }
