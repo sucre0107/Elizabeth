@@ -1,0 +1,696 @@
+{% comment %}解决404页丢失header的情况{% endcomment %}
+{% liquid
+if section.settings.menu.links == blank
+assign main_menu_linklist = linklists[section.settings.menu].links
+else
+assign main_menu_linklist = section.settings.menu.links
+endif
+%}
+
+
+{% comment %} <style>
+    .header-custom-logo-svg svg {
+        fill: currentColor;
+        color: #fff
+    }
+
+    .custom-currency-svg-flag svg{
+        width: 30px;
+        height: auto;
+        fill: currentColor;
+        
+    }
+
+
+</style>
+
+<div class="bg-gray-700 relative w-screen flex">
+
+    <div class="flex">
+        <!-- CURRENCY & LANGUAGE -->
+        <div class="flex">
+            <!-- CURRENCY -->
+            <div class="flex items-center custom-currency-svg-flag">
+        
+                <svg class="rounded-full" xmlns="http://www.w3.org/2000/svg" stroke-width="1pt" viewBox="0 0 640 480">
+                    <path fill="#006" d="M0 0h640v480H0z" />
+                    <path
+                        d="M0 0v27.95L307.037 250h38.647v-27.95L38.647 0H0zm345.684 0v27.95L38.647 250H0v-27.95L307.037 0h38.647z"
+                        fill="#fff" />
+                    <path d="M144.035 0v250h57.614V0H144.03zM0 83.333v83.333h345.684V83.333H0z" fill="#fff" />
+                    <path
+                        d="M0 100v50h345.684v-50H0zM155.558 0v250h34.568V0h-34.568zM0 250l115.228-83.334h25.765L25.765 250H0zM0 0l115.228 83.333H89.463L0 18.633V0zm204.69 83.333L319.92 0h25.764L230.456 83.333H204.69zM345.685 250l-115.228-83.334h25.765l89.464 64.7V250z"
+                        fill="#c00" />
+                    <path
+                        d="M299.762 392.523l-43.653 3.795 6.01 43.406-30.187-31.764-30.186 31.764 6.013-43.406-43.652-3.795 37.68-22.364-24.244-36.498 40.97 15.514 13.42-41.713 13.42 41.712 40.97-15.515-24.242 36.495m224.444 62.372l-10.537-15.854 17.81 6.742 5.823-18.125 5.825 18.127 17.806-6.742-10.537 15.854 16.37 9.715-18.966 1.65 2.617 18.85-13.115-13.793-13.117 13.794 2.616-18.85-18.963-1.65m16.368-291.815l-10.537-15.855 17.81 6.742 5.826-18.123 5.825 18.12 17.807-6.74-10.537 15.855 16.37 9.716-18.964 1.65 2.616 18.85-13.115-13.794-13.117 13.794 2.616-18.85-18.964-1.65M380.744 265.03l-10.537-15.853 17.808 6.742 5.825-18.127 5.825 18.125 17.808-6.743-10.535 15.853 16.37 9.72-18.965 1.65 2.615 18.85-13.117-13.795-13.115 13.795 2.618-18.85-18.964-1.65m216.21-37.93l-10.557-15.853 17.822 6.742 5.782-18.126 5.854 18.126 17.773-6.743-10.508 15.854 16.362 9.72-18.97 1.65 2.608 18.85-13.118-13.794-13.117 13.792 2.61-18.85-18.937-1.65M541.94 319.93l-10.365 6.424 2.915-11.84-9.317-7.862 12.164-.896 4.605-11.29 4.605 11.29 12.165.896-9.317 7.862 2.912 11.84"
+                        fill-rule="evenodd" fill="#fff" />
+                </svg>
+        
+                <label class="text-white pl-2" for="text_for_iso_code">{% render 'top-currency' %}</label>
+            </div>
+            <!-- SPAN "|" -->
+            <span class="text-gray-900 font-bold items-center">|</span>
+
+            <!-- LANGUAGE -->
+            <div class="flex items-center custom-currency-svg-flag">
+                <svg xmlns="http://www.w3.org/2000/svg" stroke-width="1pt" viewBox="0 0 640 480">
+                    <path fill="#006" d="M0 0h640v480H0z" />
+                    <path
+                        d="M0 0v27.95L307.037 250h38.647v-27.95L38.647 0H0zm345.684 0v27.95L38.647 250H0v-27.95L307.037 0h38.647z"
+                        fill="#fff" />
+                    <path d="M144.035 0v250h57.614V0H144.03zM0 83.333v83.333h345.684V83.333H0z" fill="#fff" />
+                    <path
+                        d="M0 100v50h345.684v-50H0zM155.558 0v250h34.568V0h-34.568zM0 250l115.228-83.334h25.765L25.765 250H0zM0 0l115.228 83.333H89.463L0 18.633V0zm204.69 83.333L319.92 0h25.764L230.456 83.333H204.69zM345.685 250l-115.228-83.334h25.765l89.464 64.7V250z"
+                        fill="#c00" />
+                    <path
+                        d="M299.762 392.523l-43.653 3.795 6.01 43.406-30.187-31.764-30.186 31.764 6.013-43.406-43.652-3.795 37.68-22.364-24.244-36.498 40.97 15.514 13.42-41.713 13.42 41.712 40.97-15.515-24.242 36.495m224.444 62.372l-10.537-15.854 17.81 6.742 5.823-18.125 5.825 18.127 17.806-6.742-10.537 15.854 16.37 9.715-18.966 1.65 2.617 18.85-13.115-13.793-13.117 13.794 2.616-18.85-18.963-1.65m16.368-291.815l-10.537-15.855 17.81 6.742 5.826-18.123 5.825 18.12 17.807-6.74-10.537 15.855 16.37 9.716-18.964 1.65 2.616 18.85-13.115-13.794-13.117 13.794 2.616-18.85-18.964-1.65M380.744 265.03l-10.537-15.853 17.808 6.742 5.825-18.127 5.825 18.125 17.808-6.743-10.535 15.853 16.37 9.72-18.965 1.65 2.615 18.85-13.117-13.795-13.115 13.795 2.618-18.85-18.964-1.65m216.21-37.93l-10.557-15.853 17.822 6.742 5.782-18.126 5.854 18.126 17.773-6.743-10.508 15.854 16.362 9.72-18.97 1.65 2.608 18.85-13.118-13.794-13.117 13.792 2.61-18.85-18.937-1.65M541.94 319.93l-10.365 6.424 2.915-11.84-9.317-7.862 12.164-.896 4.605-11.29 4.605 11.29 12.165.896-9.317 7.862 2.912 11.84"
+                        fill-rule="evenodd" fill="#fff" />
+                </svg>
+        
+                <label class="text-white pl-2" for="text_for_iso_code">{% render 'top-currency' %}</label>
+            </div>
+        </div>
+
+        <!-- lOGO -->
+        <head-logo class="container mx-auto p-5">
+            <div class="header-custom-logo-svg flex justify-start lg:flex-1 mx-auto truncate h-10">
+                {% render 'store-logo-svg' %}
+            </div>
+        </head-logo>
+        <!-- SEARCH & CART & LOGIN -->
+        <div>
+
+        </div>
+    </div>
+
+    <!-- CURRENCY & LANGUAGE POPUP -->
+    <div>
+
+    </div>
+
+</div> {% endcomment %}
+
+
+
+
+
+<div class="flex container relative min-w-full bg-white " x-data="{ mobileMenuOpen:false,searchBarOpen:false }" x-cloak>
+    <div class="container mx-auto px-4 sm:px-6 ">
+        <div class="flex mx-auto justify-start items-center py-6 md:space-x-10">
+            <!-- STORE NAME / STORE LOGO -->
+            <div class="flex justify-start lg:flex-1 truncate">
+                {% render 'store-logo-svg' %}
+            </div>
+            <!-- MOBILE MENU-ICON -->
+            <div class="-mr-2 -my-2 ml-3 md:hidden">
+                <button x-on:click="mobileMenuOpen = true" type="button"
+                    class="bg-white p-2 inline-flex items-center justify-center focus:outline-none">
+                    {% render 'menu-icon' %}
+
+                </button>
+            </div>
+            <!-- NAV MENU -->
+            <nav class="hidden md:flex space space-x-10">
+                {% for link in main_menu_linklist %}
+
+                {% if link.links != blank %}
+                {% comment %}main-menu---> mian_menu{% endcomment %}
+                {% assign link_handle = link.handle | replace: '-', '_' %}
+                <div class="relative" x-data="{ {{ link_handle }}:false }">
+                    <button x-on:click="{{ link_handle }} = !{{ link_handle }} " class="inline-flex items-center">
+                        {{ link.title }}
+                        {% render 'caret-icon' %}
+                    </button>
+                    <div x-transition:enter="transition ease-out duration-1000"
+                        x-transition:enter-start="opacity-0 translate-y-3"
+                        x-transition:enter-end="opacity-100 translate-y-0"
+                        x-transition:leave="transition ease-out duration-1000"
+                        x-transition:leave-start="opacity-100 translate-y-0"
+                        x-transition:leave-end="opacity-0 translate-y-3" x-show="{{ link_handle }}"
+                        @click.away="{{ link_handle }}=false"
+                        class="absolute z-10 -ml-5 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
+                        <div class="shadow-lg border ring-black ring-opacity-5 overflow-hidden rounded-lg">
+                            <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                                {% for childlink in link.links %}
+                                <a href="{{ childlink.url }}"
+                                    class="-m-3 p-3 flex items-start rounded-lg hover:text-gray-500">
+                                    {{ childlink.title }}
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <a href="{{ link.url }}" class="text-base text-gray-500 hover:text-gray-700">{{ link.title }}</a>
+                {% endif %}
+
+                {% endfor %}
+            </nav>
+            <!-- CART BUTTON / ACCOUNT LINKS IF ENABLE -->
+            <div class="hidden md:flex items-center justify-end md:flex-1 space-x-5">
+
+                <button x-on:click="searchBarOpen = true" type="button"
+                    class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
+                    {% render 'icon-search' %}
+                </button>
+
+                <a href="{{ routes.cart_url }}" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
+                    {% render 'cart-icon' %}
+                </a>
+                {% if shop.customer_accounts_enabled %}
+                {% if customer %}
+                <a href="{{ routes.account_url }}" class="text-base text-gray-500 hover:text-gray-900">account</a>
+                {{ 'Log out' | customer_logout_link | replace: '
+                <a', '<a class="text-base text-gray-500 hover:text-gray-900"' }} {% else %} {{ 'Log in' |
+                    customer_login_link | replace: '<a' , '<a class="text-base text-gray-500 hover:text-gray-900"' }}
+                    {{ 'Register' | customer_register_link | replace: '<a'
+                    , '<a class="text-base text-gray-500 hover:text-gray-900"' }} {% endif %} {% endif %} </div>
+
+
+                    <!--  MOBILE MENU CONTAINER -->
+                    <div x-show="mobileMenuOpen"
+                        class="absolute z-10 top-0 inset-x-0 p-2 transform origin-top-left md:hidden">
+                        <div class="shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 bg-white w-full">
+                            <div class="p-5 divide-y-2 divide-gray-50">
+                                <!-- MOBILE MENU HEADER TITLE AND CLOSE BUTTON     -->
+                                <div class="flex items-center justify-between pb-3">
+                                    <div>
+                                        <h1 class="text-lg text-gray-500">{{ section.settings.mobile_menu_title }}</h1>
+                                    </div>
+                                    <div class="-mr-2">
+                                        <button type="button" x-on:click="mobileMenuOpen = false"
+                                            class="bg-white rounded-md p-2 text-gray-500">
+                                            {% render 'icon-close' %}
+
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <!-- NAV LINKS FOR MOBILE MENU     -->
+                                <div class="pt-5">
+                                    <nav class="grid gap-y-7">
+                                        {% for link in main_menu_linklist %}
+                                        {% if link.links != blank %}
+                                        {% assign mobile_link_handle = link.handle | replace: '-', '_' %}
+                                        <div class="relative" x-data="{ {{ mobile_link_handle }}:false }">
+                                            <button x-on:click="{{ mobile_link_handle }} = ! {{ mobile_link_handle }}"
+                                                class="text-base text-gray-500 hover:bg-gray-300 flex items-center justify-between w-full">
+                                                <div>{{ link.title }}</div>
+                                                {% render 'caret-icon' %}
+                                            </button>
+                                            <div x-show="{{ mobile_link_handle }}" class="grid gap-y-7 py-3">
+                                                {% for childlink in link.links %}
+                                                <a href="{{ childlink.url }}"
+                                                    class="-m-3 p-3 mt-2 items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                                                    <span>
+                                                        {{ childlink.title }}
+                                                    </span>
+                                                </a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+
+                                        {% else %}
+                                        <a href="{{ link.url }}">{{ link.title }}</a>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </nav>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+        </div>
+        <!--  searchBar -->
+        <div x-show="searchBarOpen" class="w-full absolute top-0 bg-white border">
+            <button type="button" x-on:click="searchBarOpen = false"
+                class="absolute top-0 right-0 mr-5 mt-5 text-gray-500">
+                {% render 'icon-close' %}
+            </button>
+            <div class="h-40 flex justify-center items-center">
+                <form action="{{ routes.search_url }}" method="get" class="flex-auto">
+                    <div class="relative text-gray-500 px-10 border">
+                        <input type="search" name="q" placeholder="search"
+                            class="w-full bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none">
+                        <button type="submit" class="absolute right-0 top-0 mt-2 mr-2 md:mr-20">
+                            {% render 'icon-search' %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    {% liquid
+    if settings.enable_currencies
+    if settings.currency_type == 'shopify_payment'
+    assign enable_shopify_payments_currencies = true
+    assign enable_multiple_currencies = false
+    assign enable_auto_currency = false
+    elsif settings.currency_type == 'multiple_currencies'
+    assign enable_shopify_payments_currencies = false
+    assign enable_multiple_currencies = true
+    assign enable_auto_currency = false
+    elsif settings.currency_type == 'auto_currencies'
+    assign enable_shopify_payments_currencies = false
+    assign enable_multiple_currencies = false
+    assign enable_auto_currency = true
+    endif
+    else
+    assign enable_shopify_payments_currencies = false
+    assign enable_multiple_currencies = false
+    assign enable_auto_currency = false
+    endif
+    %}
+
+    <script>
+        window.show_auto_currency = {{ enable_auto_currency }};
+    </script>
+
+    {%- if enable_shopify_payments_currencies -%}
+    {{ "//cdn.shopify.com/s/javascripts/currencies.js" | script_tag }}
+    {{ "jquery.currencies.min.js" | asset_url | script_tag }}
+
+    <script>
+        var shopCurrency = '{{ shop.currency }}';
+        var currencySwitcher = $('#currencies'),
+            currencyItem = currencySwitcher.find('[data-currency]');
+
+        currencyItem.on('click', function (e) {
+            e.preventDefault();
+
+            var $target = $(event.currentTarget),
+                label = $('#currencies').parents('.halo-top-currency').find('[data-currency-label]');
+            cur = $(this).attr('data-currency');
+
+
+            if ($(this).hasClass('active')) {
+                return false;
+            }
+
+            currencyItem.removeClass('active');
+            $(this).addClass('active');
+
+            if (label.length && label.is(':visible')) {
+                var item = $(this).html();
+                label.html(item);
+            }
+
+            $('#currency_form option').filter(function () {
+                return ($(this).text() == cur);
+            }).prop('selected', true);
+
+            $('#currency_form').submit();
+
+        });
+    </script>
+    {%- else -%}
+    {%- if enable_multiple_currencies -%}
+    {{ "//cdn.shopify.com/s/javascripts/currencies.js" | script_tag }}
+    {{ "jquery.currencies.min.js" | asset_url | script_tag }}
+
+    {%- if enable_auto_currency == false -%}
+    <script>
+        // Pick your format here:  
+        // Can be 'money_format' or 'money_with_currency_format'
+        Currency.format = 'money_format';
+
+        var shopCurrency = '{{ shop.currency }}';
+
+        if (shopCurrency != '{{cart.currency.iso_code}}') {
+            window.location = window.location.href + '?currency=' + shopCurrency;
+        }
+
+        /* Sometimes merchants change their shop currency, let's tell our JavaScript file */
+        Currency.moneyFormats[shopCurrency].money_with_currency_format = {{ shop.money_with_currency_format | strip_html | json }};
+        Currency.moneyFormats[shopCurrency].money_format = {{ shop.money_format | strip_html | json }};
+        window.currencyFormatted = {{ shop.money_with_currency_format | json }}.includes('money');
+
+        var cookieCurrency = Currency.cookie.read();
+
+        // Fix for customer account pages 
+        $('span.money span.money').each((index, element) => {
+            $(element).parent('span.money').removeClass('money');
+        });
+
+        // Add precalculated shop currency to data attribute 
+        $('span.money').each((index, element) => {
+            $(element).attr('data-currency-{{ shop.currency }}', $(element).html());
+        });
+
+        // Select all your currencies buttons.
+        var currencySwitcher = $('#currencies'),
+            currencyItem = currencySwitcher.find('[data-currency]');
+
+        // When the page loads.
+        if (cookieCurrency == null || cookieCurrency == shopCurrency) {
+            Currency.currentCurrency = shopCurrency;
+        } else {
+            var flag = 0;
+            currencyItem.each((index, element) => {
+                if (cookieCurrency == $(element).data('currency')) {
+                    flag = 1;
+                }
+            });
+
+            if (flag == 0) {
+                cookieCurrency = shopCurrency;
+            }
+
+            Currency.currentCurrency = cookieCurrency;
+            currencySwitcher.find('.active').removeClass('active').parent().find('[data-currency=' + Currency.currentCurrency + ']').addClass('active');
+            Currency.convertAll(shopCurrency, cookieCurrency);
+        }
+
+        var active_currency_label = $('[data-currency-label]'),
+            active_currency = currencySwitcher.find('.active[data-currency]').html();
+        active_currency_label.html(active_currency);
+
+        currencyItem.on('click', (event) => {
+            event.preventDefault();
+
+            var $target = $(event.currentTarget),
+                label = $('[data-currency-label]'),
+                cur = $target.attr('data-currency');
+
+            if ($target.hasClass('active')) {
+                return false;
+            }
+
+            currencyItem.removeClass('active');
+            $target.addClass('active');
+
+            if (label.length && label.is(':visible')) {
+                var item = $target.html();
+
+                label.html(item);
+            }
+
+            cur != Currency.currentCurrency && Currency.convertAll(Currency.currentCurrency, cur);
+        });
+
+        $('body').on('refreshCurrency', () => {
+            Currency.convertAll(shopCurrency, $("#currencies .active").attr('data-currency'));
+        });
+    </script>
+    {%- else -%}
+    <script>
+        // Pick your format here:  
+        // Can be 'money_format' or 'money_with_currency_format'
+        Currency.format = 'money_format';
+
+        var shopCurrency = '{{ shop.currency }}';
+
+        if (shopCurrency != '{{cart.currency.iso_code}}') {
+            window.location = window.location.href + '?currency=' + shopCurrency;
+        }
+
+        /* Sometimes merchants change their shop currency, let's tell our JavaScript file */
+        Currency.moneyFormats[shopCurrency].money_with_currency_format = {{ shop.money_with_currency_format | strip_html | json }};
+        Currency.moneyFormats[shopCurrency].money_format = {{ shop.money_format | strip_html | json }};
+        window.currencyFormatted = {{ shop.money_with_currency_format | json }}.includes('money');
+
+        var cookieCurrency = Currency.cookie.read();
+
+        // Fix for customer account pages 
+        $('span.money span.money').each((index, element) => {
+            $(element).parent('span.money').removeClass('money');
+        });
+
+        // Add precalculated shop currency to data attribute 
+        $('span.money').each((index, element) => {
+            $(element).attr('data-currency-{{ shop.currency }}', $(element).html());
+        });
+
+        // Select all your currencies buttons.
+        var currencySwitcher = $('#currencies'),
+            currencyItem = currencySwitcher.find('[data-currency]');
+
+        if (cookieCurrency == null) {
+            $.getScript('https://ssl.geoplugin.net/javascript.gp?k=9247556ec91c71e9', function () {
+                var newCurrency = geoplugin_currencyCode(),
+                    flag = 0;
+
+                currencyItem.on('click', (event) => {
+                    event.preventDefault();
+
+                    var $target = $(event.currentTarget),
+                        label = $('[data-currency-label]'),
+                        cur = $target.attr('data-currency');
+
+                    if ($target.hasClass('active')) {
+                        return false;
+                    }
+
+                    currencyItem.removeClass('active');
+                    $target.addClass('active');
+
+                    if (label.length && label.is(':visible')) {
+                        var item = $target.html();
+
+                        label.html(item);
+                    }
+                });
+
+                // When the page loads.
+                if (cookieCurrency == null || cookieCurrency == shopCurrency) {
+                    Currency.currentCurrency = shopCurrency;
+                } else {
+                    if (flag == 0 && newCurrency != shopCurrency) {
+                        cookieCurrency = shopCurrency;
+                    }
+
+                    Currency.currentCurrency = cookieCurrency;
+                    currencySwitcher.find('.active').removeClass('active').parent().find('[data-currency=' + Currency.currentCurrency + ']').addClass('active');
+                    Currency.convertAll(shopCurrency, cookieCurrency);
+                }
+            });
+        } else if (cookieCurrency == shopCurrency) {
+            Currency.currentCurrency = shopCurrency;
+        } else {
+            var flag = 0;
+
+            currencyItem.each((index, element) => {
+                if (cookieCurrency == $(element).data('currency')) {
+                    flag = 1;
+                }
+            });
+
+            if (flag == 0) {
+                cookieCurrency = shopCurrency;
+            }
+
+            Currency.currentCurrency = cookieCurrency;
+            currencySwitcher.find('.active').removeClass('active').parent().find('[data-currency=' + Currency.currentCurrency + ']').addClass('active');
+            Currency.convertAll(shopCurrency, cookieCurrency);
+        }
+
+        currencyItem.on('click', (event) => {
+            event.preventDefault();
+
+            var $target = $(event.currentTarget),
+                label = $('[data-currency-label]'),
+                cur = $target.attr('data-currency');
+
+            if ($target.hasClass('active')) {
+                return false;
+            }
+
+            currencyItem.removeClass('active');
+            $target.addClass('active');
+
+            if (label.length && label.is(':visible')) {
+                var item = $target.html();
+
+                label.html(item);
+            }
+
+            cur != Currency.currentCurrency && Currency.convertAll(Currency.currentCurrency, cur);
+        });
+
+        $('body').on('refreshCurrency', () => {
+            Currency.convertAll(shopCurrency, $("#currencies .active").attr('data-currency'));
+        });
+
+        document.addEventListener('DOMContentLoaded', initBlocked, false);
+
+        function initBlocked() {
+            adsBlocked((blocked) => {
+                if (blocked) {
+                    alert('Please turn off the uBlock addon on the browser for this site to display your currency!');
+                } else {
+                    console.log('Ads are not blocked!');
+                }
+            })
+        }
+
+        function adsBlocked(callback) {
+            var testURL = 'https://ssl.geoplugin.net/javascript.gp?k=9247556ec91c71e9'
+
+            var myInit = {
+                method: 'HEAD',
+                mode: 'no-cors'
+            };
+
+            var myRequest = new Request(testURL, myInit);
+
+            fetch(myRequest).then((response) => {
+                return response;
+            }).then((response) => {
+                callback(false)
+            }).catch(() => {
+                callback(true)
+            });
+        }
+    </script>
+    {%- endif -%}
+    {%- else -%}
+    {%- if enable_auto_currency -%}
+    <div id="currencies" style="display: none;">
+        <a class="dropdown-item active " href="#" data-currency="{{ shop.currency }}">
+            <span class="text">
+                {{ shop.currency }}
+            </span>
+        </a>
+    </div>
+
+    {{ "//cdn.shopify.com/s/javascripts/currencies.js" | script_tag }}
+    {{ "jquery.currencies.min.js" | asset_url | script_tag }}
+
+    <script>
+        // Pick your format here:  
+        // Can be 'money_format' or 'money_with_currency_format'
+        Currency.format = 'money_format';
+
+        var shopCurrency = '{{ shop.currency }}';
+
+        if (shopCurrency != '{{cart.currency.iso_code}}') {
+            window.location = window.location.href + '?currency=' + shopCurrency;
+        }
+
+        /* Sometimes merchants change their shop currency, let's tell our JavaScript file */
+        Currency.moneyFormats[shopCurrency].money_with_currency_format = {{ shop.money_with_currency_format | strip_html | json }};
+        Currency.moneyFormats[shopCurrency].money_format = {{ shop.money_format | strip_html | json }};
+        window.currencyFormatted = {{ shop.money_with_currency_format | json }}.includes('money');
+
+        var cookieCurrency = Currency.cookie.read();
+
+        // Fix for customer account pages 
+        $('span.money span.money').each((index, element) => {
+            $(element).parent('span.money').removeClass('money');
+        });
+
+        // Add precalculated shop currency to data attribute 
+        $('span.money').each((index, element) => {
+            $(element).attr('data-currency-{{ shop.currency }}', $(element).html());
+        });
+
+        var currencyCode = shopCurrency;
+
+        // When the page loads.
+        $.getScript('https://ssl.geoplugin.net/javascript.gp?k=9247556ec91c71e9', function () {
+            var newCurrency = geoplugin_currencyCode();
+
+            if (newCurrency == null || newCurrency == shopCurrency) {
+                Currency.currentCurrency = shopCurrency;
+
+                $('#currencies .active').attr('data-currency', shopCurrency);
+            } else {
+                try {
+                    $('#currencies .active').attr('data-currency', newCurrency);
+                    currencyCode = newCurrency;
+                    Currency.currentCurrency = newCurrency;
+                    Currency.convertAll(shopCurrency, newCurrency);
+                } catch (e) {
+                    console.log(e);
+                }
+
+                $(document).ajaxComplete(function (event, xhr, settings) {
+                    try {
+                        Currency.convertAll(shopCurrency, currencyCode);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', initBlocked, false);
+
+        function initBlocked() {
+            adsBlocked((blocked) => {
+                if (blocked) {
+                    alert('Please turn off the uBlock addon on the browser for this site to display your currency!');
+                } else {
+                    console.log('Ads are not blocked!');
+                }
+            })
+        }
+
+        function adsBlocked(callback) {
+            var testURL = 'https://ssl.geoplugin.net/javascript.gp?k=9247556ec91c71e9'
+
+            var myInit = {
+                method: 'HEAD',
+                mode: 'no-cors'
+            };
+
+            var myRequest = new Request(testURL, myInit);
+
+            fetch(myRequest).then((response) => {
+                return response;
+            }).then((response) => {
+                callback(false)
+            }).catch(() => {
+                callback(true)
+            });
+        }
+    </script>
+    {%- endif -%}
+    {%- endif -%}
+    {%- endif -%}
+
+
+
+
+    {% schema %}
+    {
+    "name": "导航栏",
+    "settings": [
+    {
+        "type": "color",
+        "id": "svg_logo_color",
+        "label": "logo 颜色",
+        "default": "#fff"
+    },
+    {
+        "type": "range",
+        "id": "svg_logo_width",
+        "label": "logo 宽度",
+        "min": 150,
+        "max": 370,
+        "unit": "px",
+        "default": 180,
+        "step": 10
+    },
+    {
+    "type": "text",
+    "id": "mobile_menu_title",
+    "default": "Menu",
+    "label": "修改手机导航菜单标题"
+    },
+    {
+    "type": "link_list",
+    "id": "menu",
+    "default": "main-menu",
+    "label": "修改网页导航菜单"
+    }
+    ]
+    }
+    {% endschema %}
